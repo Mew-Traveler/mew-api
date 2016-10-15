@@ -1,2 +1,5 @@
 config/*
 spec/fixtures/*
+credentials.yml
+response.yml
+results.yml
