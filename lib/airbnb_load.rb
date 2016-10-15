@@ -12,12 +12,15 @@ module Load
 
 			airbnb_load = JSON.load(airbnbList_response.to_s)
 			@airbnb_data = airbnb_load
-			File.write('response.yml', @airbnb_data.to_yaml)
-
 		end
 
 		def write
-			File.write('./spec/fixtures/results.yml', @airbnb_data.to_yaml)
+			File.write('./spec/fixtures/airbnb_data.yml', @airbnb_data.to_yaml)
+		end
+
+		def getNeighborhood
+			neighborhood = @airbnb_data['metadata']['facets']['neighborhood_facet']
+			neighborhood
 		end
 	end
 end

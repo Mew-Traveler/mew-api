@@ -9,13 +9,13 @@ module Load
 			    params: {
 			      key: key
 			 })
-  		google_load = JSON.load(googleDetail.to_s)
+  			google_load = JSON.load(googleDetail.to_s)
 			@google_data = google_load
 			#File.write('response.yml', @google_data.to_yaml)
 		end
 
 		def write
-			File.write('./spec/fixtures/response.yml', @google_data.to_yaml)
+			File.write('./spec/fixtures/google_data.yml', @google_data.to_yaml)
 		end
 	end
 end
