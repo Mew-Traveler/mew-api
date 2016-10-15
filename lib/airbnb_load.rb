@@ -12,6 +12,8 @@ module Load
 
 			airbnb_load = JSON.load(airbnbList_response.to_s)
 			@airbnb_data = airbnb_load
+			File.write('response.yml', @airbnb_data.to_yaml)
+
 		end
 
 		def write
