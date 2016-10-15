@@ -16,7 +16,7 @@ describe 'Load specifications' do
 
 	it 'should be able to get the data from Google' do
 		google_load = Load::Google.new(
-			client_id: CREDENTIALS[:googlemap_id]
+			key: CREDENTIALS[:googlemap_id]
 		)
 	end
 end
