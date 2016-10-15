@@ -8,7 +8,7 @@ module Load
 			    	client_id: client_id
 			})
 			airbnb_load = JSON.load(airbnbList_response.to_s)
-			@airbnb_data = airbnb_load['data']
+			@airbnb_data = airbnb_load
 		end
 
 		def write

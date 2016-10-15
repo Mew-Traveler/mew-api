@@ -8,7 +8,9 @@ module Load
 			      key: client_id
 			 })
   		google_load = JSON.load(googleDetail.to_s)
-			@google_data = google_load['data']
+			@google_data = google_load
+			File.write('response.yml', @google_data.to_yaml)
+
 		end
 
 		def write
