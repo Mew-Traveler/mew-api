@@ -1,3 +1,10 @@
+<<<<<<< HEAD
 credentials.yml
 fb_response.yml
+=======
+config/*
+spec/fixtures/*
+credentials.yml
+response.yml
+>>>>>>> API_to_lib
 results.yml
