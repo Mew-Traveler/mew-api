@@ -25,7 +25,7 @@ module Load
     end
 
     def write
-      File.write('../spec/fixtures/airbnb_data.yml', @airbnb_data.to_yaml)
+      File.write('./spec/fixtures/airbnb_data.yml', @airbnb_data.to_yaml)
     end
 
     def getNeighborhood
