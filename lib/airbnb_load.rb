@@ -1,11 +1,19 @@
 require 'http'
 
 module Load
+  # Service for all Airbnb API calls
   class Airbnb
+    #Setting the URL and parameters
+    Airbnb_URL = 'https://api.airbnb.com/'
+    API_VER = 'v2'
+    Airbnb_API_URL = URI.join(Airbnb_URL, "#{API_VER}/")
+    Search_URL = URI.join(Airbnb_API_URL, "search_results")
+
     attr_reader :airbnb_data
 
     def initialize(client_id:)
-      airbnbList_response = HTTP.get('https://api.airbnb.com/v2/search_results',
+      airbnbList_response = HTTP.get(
+        Search_URL,
         params:
         {
           client_id: client_id
@@ -17,7 +25,7 @@ module Load
     end
 
     def write
-      File.write('./spec/fixtures/airbnb_data.yml', @airbnb_data.to_yaml)
+      File.write('../spec/fixtures/airbnb_data.yml', @airbnb_data.to_yaml)
     end
 
     def getNeighborhood
