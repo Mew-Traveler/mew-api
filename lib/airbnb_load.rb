@@ -1,28 +1,31 @@
 require 'http'
 
-module Load
-  class Airbnb
-    attr_reader :airbnb_data
+module Airbnb
+  class RoomsList
+    require 'http'
 
-    def initialize(client_id:)
-      airbnbList_response = HTTP.get('https://api.airbnb.com/v2/search_results',
-        params:
-        {
-          client_id: client_id
-        }
-      )
+    attr_reader :airbnb_id, :location
 
-      airbnb_load = JSON.load(airbnbList_response.to_s)
-      @airbnb_data = airbnb_load
+    def initialize(airbnb_id:, location:)
+      @airbnb_id = airbnb_id
+      @location = location
     end
 
-    def write
-      File.write('./spec/fixtures/airbnb_data.yml', @airbnb_data.to_yaml)
+    def rooms
+      return @rooms if @rooms
+
+      rooms_response =
+        HTTP.get("https://api.airbnb.com/v2/search_results",
+                 params: { client_id: @airbnb_id,
+                           location: @location
+                         })
+      rooms = JSON.load(rooms_response.to_s)['search_results']
+
+      rooms_data = rooms.first['listing']
+      @rooms = {city: rooms_data['city'],
+                id: rooms_data['id']
+               }
     end
 
-    def getNeighborhood
-      neighborhood = @airbnb_data['metadata']['facets']['neighborhood_facet']
-      neighborhood
-    end
   end
 end
