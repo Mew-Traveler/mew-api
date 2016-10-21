@@ -1,33 +1,33 @@
 require 'http'
 
-module Load
+module Google
   # Service for all Google API calls
-  class Google
+  class GoogleApi
     #Setting the URL and parameters
-    Google_URL = 'https://maps.googleapis.com/'
-    Search_Type = 'maps/api/place/nearbysearch/'
+    Google_URL = 'https://maps.googleapis.com/maps/api/'
+    Search_Type = 'distancematrix'
     Return_Type = 'json'
-    Parms = '?location=-33.8670,151.1957&radius=500&types=food&name=cruise'
-    Google_API_URL = URI.join(Google_URL, "#{Search_Type}", "#{Return_Type}/")
-    Search_URL = URI.join(Google_API_URL, "#{Parms}")
-
+    # Parms = '?location=-33.8670,151.1957&radius=500&types=food&name=cruise'
+    Google_API_URL = URI.join(Google_URL, "#{Search_Type}/", "#{Return_Type}")
+    #Search_URL = URI.join(Google_API_URL, "#{Parms}")
     attr_reader :google_data
 
-    def initialize(key:)
-      googleDetail = HTTP.get(
-        Search_URL,
-        params:
-        {
-          key: key
-        }
-      )
-      google_load = JSON.load(googleDetail.to_s)
-      @google_data = google_load
-      #write
+    def initialize(googlemap_id:)
+        @googlemap_id = googlemap_id
     end
 
-    def write
-      File.write('./spec/fixtures/google_data.yml', @google_data.to_yaml)
+    def distanceInfo(origins, dest, mode)
+      return @distance if @distance
+      distanceDetail = HTTP.get(Google_API_URL,
+        params:
+        {
+          key: @googlemap_id,
+          origins: origins,
+          destinations: dest,
+          mode: mode
+        })
+      distance_data = JSON.load(distanceDetail.to_s)['rows'][0]['elements']
     end
+
   end
 end

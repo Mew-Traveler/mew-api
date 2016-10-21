@@ -12,31 +12,37 @@ describe 'Load specifications' do
   before do
     VCR.insert_cassette CASSETTE_FILE, record: :new_episodes
 
-  #it 'should be able to get the data from Airbnb' do
-    airbnb_load = Load::Airbnb.new(
-      client_id: CREDENTIALS[:airbnb_id]
+    @airbnb_api = Airbnb::AirbnbApi.new(
+      airbnb_id: CREDENTIALS[:airbnb_id]
     )
-    airbnb_load.write
-   # airbnb_load.airbnb_data.length.must_be :>, 0
+
+    @google_api = Google::GoogleApi.new(
+      googlemap_id: CREDENTIALS[:googlemap_id]
+    )
   end
 
   after do
     VCR.eject_cassette
   end
 
-  # it 'should be able to get the data from Google' do
-  #   google_load = Load::Google.new(
-  #     key: CREDENTIALS[:googlemap_id]
-  #   )
+  it 'should be able to get the data from Airbnb' do
+    airbnb_load = Airbnb::RentInfo.new(
+      airbnb_api: @airbnb_api,
+      location: "Hsinchu"
+    )
+    rooms =airbnb_load.infos
+    rooms.length.must_be :>,0
+  end
 
-  #   google_load.google_data.length.must_be :>, 0
-  # end
+  it 'should be able to get the data from Google' do
+    google_load = Google::TrafficInfo.new(
+      google_api: @google_api,
+      origins: "Taipei",
+      destinations: "Hsinchu",
+      mode: "Train"
+    )
 
-  # it 'should be able to get the neighborhood information' do
-  #   airbnb_load = Load::Airbnb.new(
-  #     client_id: CREDENTIALS[:airbnb_id]
-  #   )
-
-  #   airbnb_load.getNeighborhood.length.must_be :>, 0
-  # end
+    distance =google_load.trafficAnaly
+    distance.length.must_be :>,0
+  end
 end
