@@ -1,40 +1,42 @@
-require 'minitest/autorun'
-require 'minitest/rg'
-require 'yaml'
-
-require './lib/airbnb_load.rb'
-require './lib/google_load.rb'
-
-CREDENTIALS = YAML.load(File.read('config/credentials.yml'))
+require_relative 'spec_helper.rb'
 
 describe 'Load specifications' do
-  it 'should be able to get the data from Airbnb' do
-    airbnb_load = Airbnb::RoomsList.new(
-      airbnb_id: CREDENTIALS[:airbnb_id],
-      location: "Hsinchu"
-    )
+  VCR.configure do |c|
+    c.cassette_library_dir = CASSETTES_FOLDER
+    c.hook_into :webmock
 
-    rooms =airbnb_load.rooms
-    rooms.length.must_be :>,0
+    c.filter_sensitive_data('<CLIENT_ID>') {CREDENTIALS[:airbnb_id]}
+    c.filter_sensitive_data('<CLIENT_ID>') {CREDENTIALS[:googlemap_id]}
   end
 
-  it 'should be able to get the data from Google' do
-    google_load = Google::Mapinfo.new(
-      googlemap_id: CREDENTIALS[:googlemap_id],
-      origins: "Taipei",
-      destinations: "Hsinchu",
-      mode: "Train"
-    )
+  before do
+    VCR.insert_cassette CASSETTE_FILE, record: :new_episodes
 
-    distance =google_load.distanceInfo
-    distance.length.must_be :>,0
+  #it 'should be able to get the data from Airbnb' do
+    airbnb_load = Load::Airbnb.new(
+      client_id: CREDENTIALS[:airbnb_id]
+    )
+    airbnb_load.write
+   # airbnb_load.airbnb_data.length.must_be :>, 0
   end
+
+  after do
+    VCR.eject_cassette
+  end
+
+  # it 'should be able to get the data from Google' do
+  #   google_load = Load::Google.new(
+  #     key: CREDENTIALS[:googlemap_id]
+  #   )
+
+  #   google_load.google_data.length.must_be :>, 0
+  # end
 
   # it 'should be able to get the neighborhood information' do
   #   airbnb_load = Load::Airbnb.new(
   #     client_id: CREDENTIALS[:airbnb_id]
   #   )
-  #
+
   #   airbnb_load.getNeighborhood.length.must_be :>, 0
   # end
 end
