@@ -16,7 +16,8 @@ module Load
     attr_reader :google_data
 
     def initialize(key:)
-      google_detail = http_get(SEARCH_URL, 'key', key)
+      http = HTTPGET.new
+      google_detail = http.http_get(SEARCH_URL, 'key', key)
       google_load = JSON.parse(google_detail.to_s)
       @google_data = google_load
     end

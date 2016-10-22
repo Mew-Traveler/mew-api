@@ -6,12 +6,12 @@ describe 'Load specifications' do
     c.cassette_library_dir = CASSETTES_FOLDER
     c.hook_into :webmock
 
-    c.filter_sensitive_data('<CLIENT_ID>') { CREDENTIALS[:airbnb_id] }
-    c.filter_sensitive_data('<CLIENT_ID>') { CREDENTIALS[:googlemap_id] }
+    c.filter_sensitive_data('<AIRBNB_ID>') { CREDENTIALS[:airbnb_id] }
+    c.filter_sensitive_data('<GOOGLEMAP_ID>') { CREDENTIALS[:googlemap_id] }
   end
 
   before do
-    VCR.insert_cassette CASSETTE_FILE, record: :new_episodes
+    VCR.insert_cassette CASSETTES_FOLDER, record: :new_episodes
   end
 
   it 'should be able to get the data from Airbnb' do

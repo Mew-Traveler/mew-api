@@ -13,7 +13,8 @@ module Load
     attr_reader :airbnb_data
 
     def initialize(client_id:)
-      airbnb_response = http_get(SEARCH_URL, 'client_id', client_id)
+      http = HTTPGET.new
+      airbnb_response = http.http_get(SEARCH_URL, 'client_id', client_id)
       airbnb_load = JSON.parse(airbnb_response.to_s)
       @airbnb_data = airbnb_load
     end
