@@ -26,7 +26,7 @@ describe 'Load specifications' do
   end
 
   it 'should be able to get the data from Airbnb' do
-    airbnb_load = Airbnb::RentInfo.new(
+    airbnb_load = Airbnb::RentInfo.find(
       airbnb_api: @airbnb_api,
       location: "Hsinchu"
     )
@@ -35,7 +35,7 @@ describe 'Load specifications' do
   end
 
   it 'should be able to get the data from Google' do
-    google_load = Google::TrafficInfo.new(
+    google_load = Google::TrafficInfo.find(
       google_api: @google_api,
       origins: "Taipei",
       destinations: "Hsinchu",

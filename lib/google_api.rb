@@ -16,6 +16,10 @@ module Google
         @googlemap_id = googlemap_id
     end
 
+    def self.analysis(posting_id)
+     fb_resource(posting_id)
+    end
+
     def distanceInfo(origins, dest, mode)
       return @distance if @distance
       distanceDetail = HTTP.get(Google_API_URL,

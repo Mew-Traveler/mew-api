@@ -11,5 +11,5 @@ require './lib/trafficinfo.rb'
 
 FIXTURES_FOLDER = 'spec/fixtures'
 CASSETTES_FOLDER = "#{FIXTURES_FOLDER}/cassettes"
-CASSETTE_FILE = 'load'
+CASSETTE_FILE = 'overallapi'
 CREDENTIALS = YAML.load(File.read('config/credentials.yml'))
